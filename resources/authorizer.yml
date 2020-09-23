@@ -1,0 +1,32 @@
+Resources:
+  ApiGatewayAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: ApiGatewayAuthorizer
+      Type: COGNITO_USER_POOLS
+      IdentitySource: method.request.header.Authorization
+      RestApiId:
+        Ref: ApiGatewayRestApi
+      ProviderARNs:
+        - { Fn::GetAtt: [UserPool, Arn] }
+
+  GatewayResponse401:
+    Type: 'AWS::ApiGateway::GatewayResponse'
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: UNAUTHORIZED
+      RestApiId:
+        Ref: 'ApiGatewayRestApi'
+      StatusCode: '401'
+  GatewayResponse500:
+    Type: 'AWS::ApiGateway::GatewayResponse'
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: AUTHORIZER_FAILURE
+      RestApiId:
+        Ref: 'ApiGatewayRestApi'
+      StatusCode: '500'

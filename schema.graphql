@@ -1,0 +1,36 @@
+input CreatePostInput {
+	postId: ID
+	content: String!
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+input DeletePostInput {
+	postId: ID!
+}
+
+input UpdatePostInput {
+	postId: ID!
+	content: String!
+}
+
+type Mutation {
+	createPost(input: CreatePostInput!): Post
+	deletePost(input: DeletePostInput!, expectedVersion: Int): Post
+	updatePost(input: UpdatePostInput!): Post
+}
+
+type Query {
+	getPost(postId: ID!): Post
+	listPost: [Post!]!
+}
+
+type Post @model {
+	postId: ID!
+	content: String!
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}

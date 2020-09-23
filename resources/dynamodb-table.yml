@@ -1,0 +1,14 @@
+Resources:
+  DynamoDBPost:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: ${self:provider.environment.TABLE_POST}
+      AttributeDefinitions:
+        - AttributeName: postId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: postId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

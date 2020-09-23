@@ -1,0 +1,16 @@
+{
+  "version": "2017-02-28",
+  "operation": "PutItem",
+  "key": {
+    "postId": $util.dynamodb.toDynamoDBJson($util.defaultIfNullOrBlank($ctx.args.input.postId, $util.autoId())),
+    "createdAt": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601()),
+    "updatedAt": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601()),
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($ctx.args.input),
+  "condition": {
+    "expression": "attribute_not_exists(#postId)",
+    "expressionNames": {
+      "#postId": "postId"
+    }
+  }
+}
