@@ -2,6 +2,8 @@
 
 Serverless FrameworkでAWS環境を構築する。
 
+※予めRootにsrcディレクトリを作成してください。
+
 > AppSync / DynamoDB / Amplify / Cognito / Lambda
 
 before deploy
