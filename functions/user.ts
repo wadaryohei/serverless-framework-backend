@@ -17,7 +17,7 @@ export const handler = (event: CognitoUserPoolEvent, _context: Context, callback
     Item: {
       'userId': event.userName,
       'username': event.userName,
-      'email': 'hoegoe@a.com'
+      'email': event.request.userAttributes.email
     }
   }
 
