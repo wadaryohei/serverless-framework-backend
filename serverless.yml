@@ -10,10 +10,9 @@ service: my-serverless-backend
 # サービスに必要なプラグインを設定
 # ------------------------------------------
 plugins:
+  - serverless-webpack
   - aws-amplify-serverless-plugin
   - serverless-appsync-plugin
-  - serverless-plugin-typescript
-  - serverless-offline
 
 
 # ------------------------------------------
@@ -45,6 +44,7 @@ provider:
   apiGateway:
     minimumCompressionSize: 1024
   environment:
+    TABLE_USER: ${self:service}-${opt:stage, self:provider.stage}-User
     TABLE_POST: ${self:service}-${opt:stage, self:provider.stage}-Post
   iamRoleStatements:
     - Effect: Allow
@@ -99,15 +99,33 @@ functions:
           trigger: CustomMessage
           existing: true
 
+  # ユーザー作成時にDBに情報を格納する処理
+  postConfirmation:
+    handler: functions/user.handler
+    memorySize: 128
+    timeout: 10
+    events:
+      - cognitoUserPool:
+          pool: ${self:service}-user-pool-${opt:stage, self:provider.stage}
+          trigger: PostConfirmation
+          existing: true
+
 # ------------------------------------------
 # custom
 # カスタムするサービス郡を設定
 # ------------------------------------------
 custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+
   amplify:
     - filename: ./src/aws-exports.js
       type: javascript
       appClient: UserPoolClient
+
   appSync:
     name: ${self:service}-${self:provider.stage}
     authenticationType: AMAZON_COGNITO_USER_POOLS
@@ -130,6 +148,10 @@ custom:
         type: Query
         field: listPost
         dataSource: Post
+      -
+        type: Query
+        field: getUser
+        dataSource: User
 
       # ------------------------------------------
       # Mutations
@@ -146,14 +168,24 @@ custom:
         type: Mutation
         field: deletePost
         dataSource: Post
+
     schema: schema.graphql
+
     dataSources:
+      - type: AMAZON_DYNAMODB
+        name: User
+        config:
+          tableName: ${self:provider.environment.TABLE_USER}
+          serviceRoleArn: { Fn::GetAtt: [AppSyncDynamoDBServiceRole, Arn] }
+          region: ap-northeast-1
+
       - type: AMAZON_DYNAMODB
         name: Post
         config:
           tableName: ${self:provider.environment.TABLE_POST}
           serviceRoleArn: { Fn::GetAtt: [AppSyncDynamoDBServiceRole, Arn] }
           region: ap-northeast-1
+
 
 # ------------------------------------------
 # resources

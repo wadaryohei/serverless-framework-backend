@@ -20,6 +20,7 @@ Resources:
       RestApiId:
         Ref: 'ApiGatewayRestApi'
       StatusCode: '401'
+
   GatewayResponse500:
     Type: 'AWS::ApiGateway::GatewayResponse'
     Properties:
