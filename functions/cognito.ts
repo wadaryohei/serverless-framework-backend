@@ -1,10 +1,9 @@
-import { CognitoUserPoolTriggerEvent, Context, Callback } from 'aws-lambda';
+import { CognitoUserPoolTriggerHandler, CognitoUserPoolTriggerEvent, Context, Callback } from "aws-lambda"
 
 // ------------------------------------------
 // ユーザー作成認証する処理
 // ------------------------------------------
-export const handler = (event: CognitoUserPoolTriggerEvent, context: Context, callback: Callback) => {
-
+export const handler: CognitoUserPoolTriggerHandler = (event: CognitoUserPoolTriggerEvent, _context: Context, callback: Callback) => {
   /**
    * 新規登録のとき
    */
@@ -12,6 +11,7 @@ export const handler = (event: CognitoUserPoolTriggerEvent, context: Context, ca
     event.response.smsMessage = `あなたのサービス確認コードは${event.request.codeParameter}です`
     event.response.emailSubject = '新規登録の確認コード'
     event.response.emailMessage = `下記URLからユーザー登録を完了してください。\<br\> URL: http://localhost:3000/signup/confirm?email=${encodeURIComponent(event.request.userAttributes.email)}&username=${event.userName}&code=${event.request.codeParameter} \<br\> Code: ${event.request.codeParameter}`
+
   /**
    * 認証コード再送信
    */
