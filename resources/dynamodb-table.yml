@@ -1,4 +1,18 @@
 Resources:
+  DynamoDBUser:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: ${self:provider.environment.TABLE_USER}
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
   DynamoDBPost:
     Type: 'AWS::DynamoDB::Table'
     Properties:
