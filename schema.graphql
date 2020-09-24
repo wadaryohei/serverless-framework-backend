@@ -34,13 +34,6 @@ schema {
 }
 
 # ------------------------------
-# Connetion
-# ------------------------------
-type ModelUserConnection {
-	item: User
-}
-
-# ------------------------------
 # Input
 # ------------------------------
 input CreatePostInput {

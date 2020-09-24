@@ -1,10 +1,10 @@
-import AWS = require('aws-sdk');
-import { CognitoUserPoolTriggerEvent, Context, Callback } from 'aws-lambda';
+import AWS from 'aws-sdk';
+import { CognitoUserPoolEvent, Context, Callback } from 'aws-lambda';
 
 // ------------------------------------------
 // User作成完了時ユーザー情報をUserテーブルに書き込む
 // ------------------------------------------
-export const handler = (event: CognitoUserPoolTriggerEvent, callback: Callback) => {
+export const handler = (event: CognitoUserPoolEvent, _context: Context, callback: Callback) => {
 
   // DynamoDBを初期化
   const dynamoDB = new AWS.DynamoDB.DocumentClient({
@@ -16,8 +16,8 @@ export const handler = (event: CognitoUserPoolTriggerEvent, callback: Callback) 
     TableName: 'my-serverless-backend-dev-User',
     Item: {
       'userId': event.userName,
-      "username": event.userName,
-      "email": event.request.userAttributes.email
+      'username': event.userName,
+      'email': 'hoegoe@a.com'
     }
   }
 
