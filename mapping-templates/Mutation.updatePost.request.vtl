@@ -6,6 +6,7 @@
   },
   "attributeValues": {
     "content": $util.dynamodb.toDynamoDBJson($$ctx.args.input.content),
+    "userId": $util.dynamodb.toDynamoDBJson($$ctx.args.input.userId),
     "updatedAt": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601())
   }
 }

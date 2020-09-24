@@ -1,6 +1,10 @@
+# ------------------------------
+# Model
+# ------------------------------
 type Post @model {
 	postId: ID!
 	content: String!
+	userId: ID!
 }
 
 type User @model {
@@ -9,22 +13,9 @@ type User @model {
 	email: String!
 }
 
-input CreatePostInput {
-	postId: ID
-	content: String!
-	createdAt: AWSDateTime
-	updatedAt: AWSDateTime
-}
-
-input DeletePostInput {
-	postId: ID!
-}
-
-input UpdatePostInput {
-	postId: ID!
-	content: String!
-}
-
+# ------------------------------
+# Schema
+# ------------------------------
 type Mutation {
 	createPost(input: CreatePostInput!): Post
 	deletePost(input: DeletePostInput!, expectedVersion: Int): Post
@@ -40,4 +31,32 @@ type Query {
 schema {
 	query: Query
 	mutation: Mutation
+}
+
+# ------------------------------
+# Connetion
+# ------------------------------
+type ModelUserConnection {
+	item: User
+}
+
+# ------------------------------
+# Input
+# ------------------------------
+input CreatePostInput {
+	postId: ID
+	content: String!
+	userId: ID!
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+input DeletePostInput {
+	postId: ID!
+}
+
+input UpdatePostInput {
+	postId: ID!
+	content: String!
+	userId: ID!
 }
