@@ -1,4 +1,11 @@
 {
   "version": "2017-02-28",
-  "operation": "Scan"
+  "operation": "Query",
+  "query" : {
+    "expression" : "username = :username",
+    "expressionValues" : {
+      ":username": $util.dynamodb.toDynamoDBJson($context.identity.username)
+    }
+  },
+  "index" : "username-index",
 }

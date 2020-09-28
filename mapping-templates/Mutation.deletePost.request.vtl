@@ -3,5 +3,12 @@
   "operation": "DeleteItem",
   "key": {
     "postId": $util.dynamodb.toDynamoDBJson($ctx.args.input.postId)
+  },
+  "condition": {
+    "expression": "username = :username",
+    "expressionValues": {
+      ":username": $util.dynamodb.toDynamoDBJson($context.identity.username)
+    }
   }
 }
+
