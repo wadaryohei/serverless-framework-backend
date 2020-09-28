@@ -3,8 +3,8 @@
 # ------------------------------
 type Post @model {
 	postId: ID!
+	username: String!
 	content: String!
-	userId: ID!
 }
 
 type User @model {
@@ -38,8 +38,8 @@ schema {
 # ------------------------------
 input CreatePostInput {
 	postId: ID
+	username: String!
 	content: String!
-	userId: ID!
 	createdAt: AWSDateTime
 	updatedAt: AWSDateTime
 }
@@ -50,6 +50,6 @@ input DeletePostInput {
 
 input UpdatePostInput {
 	postId: ID!
+	username: String!
 	content: String!
-	userId: ID!
 }
